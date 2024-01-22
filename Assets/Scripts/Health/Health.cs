@@ -36,7 +36,7 @@ public class Health : MonoBehaviour
 
         if (currentHealth > 0) // Если здоровье больше 0
         {
-            anim.SetTrigger("hurt"); // Запускаем анимацию получения урона
+            anim.SetTrigger("Hit"); // Запускаем анимацию получения урона
             StartCoroutine(Invunerability()); // Запускаем период неуязвимости
             SoundManager.instance.PlaySound(hurtSound); // Воспроизводим звук получения урона
         }
@@ -48,8 +48,8 @@ public class Health : MonoBehaviour
                 foreach (Behaviour component in components)
                     component.enabled = false;
 
-                anim.SetBool("grounded", true); // Устанавливаем анимацию на земле в true
-                anim.SetTrigger("die"); // Запускаем анимацию смерти
+                anim.SetBool("Grounded", true); // Устанавливаем анимацию на земле в true
+                anim.SetTrigger("Dead"); // Запускаем анимацию смерти
 
                 dead = true; // Устанавливаем флаг смерти в true
                 SoundManager.instance.PlaySound(deathSound); // Воспроизводим звук смерти
@@ -88,7 +88,7 @@ public class Health : MonoBehaviour
     public void Respawn()
     {
         AddHealth(startingHealth); // Восстанавливаем здоровье до начального значения
-        anim.ResetTrigger("die"); // Сбрасываем триггер смерти анимации
+        anim.ResetTrigger("Dead"); // Сбрасываем триггер смерти анимации
         anim.Play("Idle"); // Запускаем анимацию бездействия
         StartCoroutine(Invunerability()); // Запускаем период неуязвимости
         dead = false; // Устанавливаем флаг смерти в false

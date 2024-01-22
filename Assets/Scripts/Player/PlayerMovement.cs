@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0) return;
         // Если счетчик coyote меньше или равен 0, игрок не находится на стене и нет доступных дополнительных прыжков, ничего не делаем
 
-        // SoundManager.instance.PlaySound(jumpSound);
+        SoundManager.instance.PlaySound(jumpSound);
 
         if (onWall())
             WallJump();

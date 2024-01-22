@@ -7,6 +7,7 @@ public class EnemyDamage : MonoBehaviour
     protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player") // Если враг столкнулся с игроком
+            Debug.Log("Damage");
             collision.GetComponent<Health>()?.TakeDamage(damage); // Наносим урон игроку, если у него есть компонент Health
     }
 }

@@ -5,19 +5,19 @@ public class PlayerRespawn : MonoBehaviour
     [SerializeField] private AudioClip checkpoint;
     private Transform currentCheckpoint;
     private Health playerHealth;
-    private UIManager uiManager;
+    // private UIManager uiManager;
 
     private void Awake()
     {
         playerHealth = GetComponent<Health>();
-        uiManager = FindObjectOfType<UIManager>();
+        // uiManager = FindObjectOfType<UIManager>();
     }
 
     public void RespawnCheck()
     {
         if (currentCheckpoint == null)
         {
-            uiManager.GameOver(); // Если текущая точка сохранения не установлена, вызываем метод для отображения экрана поражения
+            // uiManager.GameOver(); // Если текущая точка сохранения не установлена, вызываем метод для отображения экрана поражения
             return;
         }
 
