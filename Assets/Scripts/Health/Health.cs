@@ -22,11 +22,15 @@ public class Health : MonoBehaviour
     [SerializeField] private AudioClip deathSound; // Звук смерти
     [SerializeField] private AudioClip hurtSound; // Звук получения урона
 
+
+    private Rigidbody2D body;
+
     private void Awake()
     {
         currentHealth = startingHealth; // Устанавливаем текущее здоровье равным начальному
         anim = GetComponent<Animator>(); // Получаем компонент Animator
         spriteRend = GetComponent<SpriteRenderer>(); // Получаем компонент SpriteRenderer
+        body = GetComponent<Rigidbody2D>();
     }
 
     public void TakeDamage(float _damage)
@@ -37,6 +41,11 @@ public class Health : MonoBehaviour
         if (currentHealth > 0) // Если здоровье больше 0
         {
             anim.SetTrigger("Hit"); // Запускаем анимацию получения урона
+
+            // Применяем силу отскока к персонажу
+            Vector2 knockbackForce = new Vector2(0f, 15f); // Измените значения, если необходимо
+            body.velocity = knockbackForce;
+
             StartCoroutine(Invunerability()); // Запускаем период неуязвимости
             SoundManager.instance.PlaySound(hurtSound); // Воспроизводим звук получения урона
         }
@@ -90,7 +99,7 @@ public class Health : MonoBehaviour
         AddHealth(startingHealth); // Восстанавливаем здоровье до начального значения
         anim.ResetTrigger("Dead"); // Сбрасываем триггер смерти анимации
         anim.Play("Idle"); // Запускаем анимацию бездействия
-        StartCoroutine(Invunerability()); // Запускаем период неуязвимости
+        // StartCoroutine(Invunerability()); // Запускаем период неуязвимости
         dead = false; // Устанавливаем флаг смерти в false
 
         // Включаем все прикрепленные компоненты
