@@ -3,69 +3,70 @@ using System.Collections;
 
 public class Firetrap : MonoBehaviour
 {
-    [SerializeField] private float damage;
+    [SerializeField] private float damage; // Урон, который наносит ловушка
 
     [Header("Firetrap Timers")]
-    [SerializeField] private float activationDelay;
-    [SerializeField] private float activeTime;
-    private Animator anim;
-    private SpriteRenderer spriteRend;
+    [SerializeField] private float activationDelay; // Задержка перед активацией ловушки
+    [SerializeField] private float activeTime; // Время активности ловушки
+    private Animator anim; // Компонент аниматора
+    private SpriteRenderer spriteRend; // Компонент отображения спрайта
 
     [Header("SFX")]
-    [SerializeField] private AudioClip firetrapSound;
+    [SerializeField] private AudioClip firetrapSound; // Звук ловушки
 
-    private bool triggered; //when the trap gets triggered
-    private bool active; //when the trap is active and can hurt the player
+    private bool triggered; // Флаг, указывающий на активацию ловушки
+    private bool active; // Флаг, указывающий на активное состояние ловушки
 
-    private Health playerHealth;
+    private Health playerHealth; // Компонент здоровья игрока
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
-        spriteRend = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>(); // Получаем компонент аниматора
+        spriteRend = GetComponent<SpriteRenderer>(); // Получаем компонент отображения спрайта
     }
 
     private void Update()
     {
         if (playerHealth != null && active)
-            playerHealth.TakeDamage(damage);
+            playerHealth.TakeDamage(damage); // Наносим урон игроку, если ловушка активна
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            playerHealth = collision.GetComponent<Health>();
+            playerHealth = collision.GetComponent<Health>(); // Получаем компонент здоровья игрока
 
             if (!triggered)
-                StartCoroutine(ActivateFiretrap());
+                StartCoroutine(ActivateFiretrap()); // Запускаем активацию ловушки
 
             if (active)
-                collision.GetComponent<Health>().TakeDamage(damage);
+                collision.GetComponent<Health>().TakeDamage(damage); // Наносим урон игроку, если ловушка активна
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Player")
-            playerHealth = null;
+            playerHealth = null; // Сбрасываем компонент здоровья игрока
     }
+
     private IEnumerator ActivateFiretrap()
     {
-        //turn the sprite red to notify the player and trigger the trap
-        triggered = true;
-        spriteRend.color = Color.red;
+        triggered = true; // Устанавливаем флаг активации ловушки в `true`
+        spriteRend.color = Color.red; // Меняем цвет спрайта на красный для оповещения игрока
 
-        //Wait for delay, activate trap, turn on animation, return color back to normal
-        yield return new WaitForSeconds(activationDelay);
-        SoundManager.instance.PlaySound(firetrapSound);
-        spriteRend.color = Color.white; //turn the sprite back to its initial color
-        active = true;
-        anim.SetBool("activated", true);
+        yield return new WaitForSeconds(activationDelay); // Ждем задержку перед активацией
 
-        //Wait until X seconds, deactivate trap and reset all variables and animator
-        yield return new WaitForSeconds(activeTime);
-        active = false;
-        triggered = false;
-        anim.SetBool("activated", false);
+        SoundManager.instance.PlaySound(firetrapSound); // Воспроизводим звук ловушки
+        spriteRend.color = Color.white; // Возвращаем цвет спрайта к исходному
+        active = true; // Устанавливаем флаг активности ловушки в `true`
+        anim.SetBool("activated", true); // Включаем анимацию активации ловушки
+
+        yield return new WaitForSeconds(activeTime); // Ждем время активности ловушки
+
+        active = false; // Устанавливаем флаг активности ловушки в `false`
+        triggered = false; // Сбрасываем флаг активации ловушки в `false`
+        anim.SetBool("activated", false); // Выключаем анимацию активации ловушки
     }
 }

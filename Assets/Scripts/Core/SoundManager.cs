@@ -8,54 +8,56 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        soundSource = GetComponent<AudioSource>();
-        musicSource = transform.GetChild(0).GetComponent<AudioSource>();
+        soundSource = GetComponent<AudioSource>(); // Получаем компонент AudioSource, отвечающий за звуки
+        musicSource = transform.GetChild(0).GetComponent<AudioSource>(); // Получаем первый дочерний компонент AudioSource, отвечающий за музыку
 
-        //Keep this object even when we go to new scene
+        // Сохраняем этот объект при переходе на новую сцену
         if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        //Destroy duplicate gameobjects
+        // Уничтожаем дублирующиеся объекты
         else if (instance != null && instance != this)
             Destroy(gameObject);
 
-        //Assign initial volumes
+        // Назначаем начальные значения громкости
         ChangeMusicVolume(0);
         ChangeSoundVolume(0);
     }
+
     public void PlaySound(AudioClip _sound)
     {
-        soundSource.PlayOneShot(_sound);
+        soundSource.PlayOneShot(_sound); // Воспроизводим звук один раз
     }
 
     public void ChangeSoundVolume(float _change)
     {
-        ChangeSourceVolume(1, "soundVolume", _change, soundSource);
+        ChangeSourceVolume(1, "soundVolume", _change, soundSource); // Изменяем громкость звуков
     }
+
     public void ChangeMusicVolume(float _change)
     {
-        ChangeSourceVolume(0.3f, "musicVolume", _change, musicSource);
+        ChangeSourceVolume(0.3f, "musicVolume", _change, musicSource); // Изменяем громкость музыки
     }
 
     private void ChangeSourceVolume(float baseVolume, string volumeName, float change, AudioSource source)
     {
-        //Get initial value of volume and change it
+        // Получаем текущее значение громкости и изменяем его
         float currentVolume = PlayerPrefs.GetFloat(volumeName, 1);
         currentVolume += change;
 
-        //Check if we reached the maximum or minimum value
+        // Проверяем, достигли ли максимального или минимального значения
         if (currentVolume > 1)
             currentVolume = 0;
         else if (currentVolume < 0)
             currentVolume = 1;
 
-        //Assign final value
+        // Назначаем конечное значение
         float finalVolume = currentVolume * baseVolume;
         source.volume = finalVolume;
 
-        //Save final value to player prefs
+        // Сохраняем конечное значение в PlayerPrefs
         PlayerPrefs.SetFloat(volumeName, currentVolume);
     }
 }
