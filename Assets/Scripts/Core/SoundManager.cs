@@ -15,7 +15,6 @@ public class SoundManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         // ”ничтожаем дублирующиес€ объекты
         else if (instance != null && instance != this)
