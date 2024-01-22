@@ -7,22 +7,23 @@ public class LoadingManager : MonoBehaviour
 
     private void Awake()
     {
-        //Keep this object even when we go to new scene
+        // Сохраняем этот объект при переходе на новую сцену
         if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        //Destroy duplicate gameobjects
+        // Уничтожаем дублирующиеся объекты
         else if (instance != null && instance != this)
             Destroy(gameObject);
     }
 
     public void LoadCurrentLevel()
     {
-        int currentLevel = PlayerPrefs.GetInt("currentLevel", 1);
-        SceneManager.LoadScene(currentLevel);
+        int currentLevel = PlayerPrefs.GetInt("currentLevel", 1); // Получаем текущий уровень из PlayerPrefs
+        SceneManager.LoadScene(currentLevel); // Загружаем сцену с текущим уровнем
     }
+
     public void Restart()
     {
         //SceneManager.LoadScene(currentLevel);

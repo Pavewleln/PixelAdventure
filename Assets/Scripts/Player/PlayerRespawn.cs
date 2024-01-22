@@ -15,26 +15,24 @@ public class PlayerRespawn : MonoBehaviour
 
     public void RespawnCheck()
     {
-        if (currentCheckpoint == null) 
+        if (currentCheckpoint == null)
         {
-            uiManager.GameOver();
+            uiManager.GameOver(); // Если текущая точка сохранения не установлена, вызываем метод для отображения экрана поражения
             return;
         }
 
-        playerHealth.Respawn(); //Restore player health and reset animation
-        transform.position = currentCheckpoint.position; //Move player to checkpoint location
-
-        //Move the camera to the checkpoint's room
-        Camera.main.GetComponent<CameraController>().MoveToNewRoom(currentCheckpoint.parent);
+        playerHealth.Respawn(); // Восстанавливаем здоровье игрока и сбрасываем анимацию
+        transform.position = currentCheckpoint.position; // Перемещаем игрока в положение точки сохранения
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Checkpoint")
         {
-            currentCheckpoint = collision.transform;
-            SoundManager.instance.PlaySound(checkpoint);
-            collision.GetComponent<Collider2D>().enabled = false;
-            collision.GetComponent<Animator>().SetTrigger("activate");
+            currentCheckpoint = collision.transform; // Устанавливаем текущую точку сохранения
+            SoundManager.instance.PlaySound(checkpoint); // Воспроизводим звук точки сохранения
+            collision.GetComponent<Collider2D>().enabled = false; // Отключаем коллайдер точки сохранения, чтобы избежать повторных срабатываний
+            collision.GetComponent<Animator>().SetTrigger("On"); // Запускаем анимацию активации точки сохранения
         }
     }
 }

@@ -7,23 +7,23 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpPower;
 
     [Header("Coyote Time")]
-    [SerializeField] private float coyoteTime; //How much time the player can hang in the air before jumping
-    private float coyoteCounter; //How much time passed since the player ran off the edge
+    [SerializeField] private float coyoteTime; // Время, в течение которого игрок может находиться в воздухе перед прыжком
+    private float coyoteCounter; // Время, прошедшее с момента, когда игрок оттолкнулся от края платформы
 
     [Header("Multiple Jumps")]
-    [SerializeField] private int extraJumps;
-    private int jumpCounter;
+    [SerializeField] private int extraJumps; // Дополнительные прыжки, которые может совершить игрок
+    private int jumpCounter; // Количество доступных дополнительных прыжков
 
     [Header("Wall Jumping")]
-    [SerializeField] private float wallJumpX; //Horizontal wall jump force
-    [SerializeField] private float wallJumpY; //Vertical wall jump force
+    [SerializeField] private float wallJumpX; // Горизонтальная сила прыжка от стены
+    [SerializeField] private float wallJumpY; // Вертикальная сила прыжка от стены
 
     [Header("Layers")]
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private LayerMask groundLayer; // Слой, представляющий землю
+    [SerializeField] private LayerMask wallLayer; // Слой, представляющий стены
 
     [Header("Sounds")]
-    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip jumpSound; // Звук прыжка
 
     private Rigidbody2D body;
     private Animator anim;
@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        //Grab references for rigidbody and animator from object
+        // Получаем ссылки на компоненты Rigidbody2D и Animator объекта
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
@@ -41,23 +41,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
+        horizontalInput = Input.GetAxis("Horizontal"); // Получаем ввод горизонтального движения от игрока
 
-        //Flip player when moving left-right
+        // Поворот игрока при движении влево-вправо
         if (horizontalInput > 0.01f)
             transform.localScale = Vector3.one;
         else if (horizontalInput < -0.01f)
             transform.localScale = new Vector3(-1, 1, 1);
 
-        //Set animator parameters
-        anim.SetBool("Run", horizontalInput != 0);
-        anim.SetBool("Grounded", isGrounded());
+        // Устанавливаем параметры аниматора
+        anim.SetBool("Run", horizontalInput != 0); // Анимация бега
+        anim.SetBool("Grounded", isGrounded()); // Анимация нахождения на земле
 
-        //Jump
+        // Прыжок
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
 
-        //Adjustable jump height
+        // Регулировка высоты прыжка
         if (Input.GetKeyUp(KeyCode.Space) && body.velocity.y > 0)
             body.velocity = new Vector2(body.velocity.x, body.velocity.y / 2);
 
@@ -73,18 +73,18 @@ public class PlayerMovement : MonoBehaviour
 
             if (isGrounded())
             {
-                coyoteCounter = coyoteTime; //Reset coyote counter when on the ground
-                jumpCounter = extraJumps; //Reset jump counter to extra jump value
+                coyoteCounter = coyoteTime; // Сброс счетчика coyote при нахождении на земле
+                jumpCounter = extraJumps; // Сброс счетчика прыжков до значения extraJumps
             }
             else
-                coyoteCounter -= Time.deltaTime; //Start decreasing coyote counter when not on the ground
+                coyoteCounter -= Time.deltaTime; // Начало уменьшения счетчика coyote, если не на земле
         }
     }
 
     private void Jump()
     {
         if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0) return;
-        //If coyote counter is 0 or less and not on the wall and don't have any extra jumps don't do anything
+        // Если счетчик coyote меньше или равен 0, игрок не находится на стене и нет доступных дополнительных прыжков, ничего не делаем
 
         // SoundManager.instance.PlaySound(jumpSound);
 
@@ -96,24 +96,24 @@ public class PlayerMovement : MonoBehaviour
                 body.velocity = new Vector2(body.velocity.x, jumpPower);
             else
             {
-                //If not on the ground and coyote counter bigger than 0 do a normal jump
+                // Если не на земле и счетчик coyote больше 0, совершаем обычный прыжок
                 if (coyoteCounter > 0)
                 {
-                    // Execute double jump animation
-                    anim.SetTrigger("DoubleJump");
                     body.velocity = new Vector2(body.velocity.x, jumpPower);
                 }
                 else
                 {
-                    if (jumpCounter > 0) //If we have extra jumps then jump and decrease the jump counter
+                    if (jumpCounter > 0) // Если у нас есть дополнительные прыжки, то прыгаем и уменьшаем счетчик прыжков
                     {
+                        // Выполняем анимацию двойного прыжка
+                        // anim.SetTrigger("DoubleJump");
                         body.velocity = new Vector2(body.velocity.x, jumpPower);
                         jumpCounter--;
                     }
                 }
             }
 
-            //Reset coyote counter to 0 to avoid double jumps
+            // Сбрасываем счетчик coyote до 0, чтобы избежать двойных прыжков
             coyoteCounter = 0;
         }
     }
