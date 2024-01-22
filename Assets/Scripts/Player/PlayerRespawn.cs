@@ -32,7 +32,8 @@ public class PlayerRespawn : MonoBehaviour
             currentCheckpoint = collision.transform; // ”станавливаем текущую точку сохранени€
             SoundManager.instance.PlaySound(checkpoint); // ¬оспроизводим звук точки сохранени€
             collision.GetComponent<Collider2D>().enabled = false; // ќтключаем коллайдер точки сохранени€, чтобы избежать повторных срабатываний
-            collision.GetComponent<Animator>().SetTrigger("On"); // «апускаем анимацию активации точки сохранени€
+            collision.GetComponent<Animator>().SetTrigger("Activated"); // «апускаем анимацию активации точки сохранени€
+            playerHealth.Respawn();
         }
     }
 }

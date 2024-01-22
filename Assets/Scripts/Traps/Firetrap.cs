@@ -61,12 +61,12 @@ public class Firetrap : MonoBehaviour
         SoundManager.instance.PlaySound(firetrapSound); // Воспроизводим звук ловушки
         spriteRend.color = Color.white; // Возвращаем цвет спрайта к исходному
         active = true; // Устанавливаем флаг активности ловушки в `true`
-        anim.SetBool("activated", true); // Включаем анимацию активации ловушки
+        anim.SetBool("Activated", true); // Включаем анимацию активации ловушки
 
         yield return new WaitForSeconds(activeTime); // Ждем время активности ловушки
 
         active = false; // Устанавливаем флаг активности ловушки в `false`
         triggered = false; // Сбрасываем флаг активации ловушки в `false`
-        anim.SetBool("activated", false); // Выключаем анимацию активации ловушки
+        anim.SetBool("Activated", false); // Выключаем анимацию активации ловушки
     }
 }
