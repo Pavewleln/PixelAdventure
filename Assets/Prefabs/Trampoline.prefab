@@ -166,4 +166,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 25
-  jumpSound: {fileID: 8300000, guid: 3c23de8f88fc9ba498b0d232fb269dff, type: 3}
+  jumpSound: {fileID: 8300000, guid: 1ccd0d330e3d9864693cc6e934fb24c6, type: 3}
