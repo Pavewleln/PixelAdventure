@@ -35,22 +35,4 @@ public class EnemyProjectile : EnemyDamage
         if (lifetime > resetTime)
             gameObject.SetActive(false); // Если время жизни снаряда истекло, деактивируем его
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        hit = true; // Устанавливаем флаг попадания в `true`
-        base.OnTriggerEnter2D(collision); // Вызываем логику родительского класса
-
-        coll.enabled = false; // Отключаем коллайдер снаряда
-
-        if (anim != null)
-            anim.SetTrigger("explode"); // Если снаряд - огненный шар, запускаем анимацию взрыва
-        else
-            gameObject.SetActive(false); // Если снаряд - стрела, деактивируем ее
-    }
-
-    private void Deactivate()
-    {
-        gameObject.SetActive(false); // Деактивируем снаряд
-    }
 }
