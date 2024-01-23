@@ -15,7 +15,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene("Levels");
+        SceneManager.LoadScene("LevelsMenu");
     }
 
     // Выход из игры/выход из режима игры, если в режиме редактора

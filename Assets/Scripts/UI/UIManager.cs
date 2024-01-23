@@ -44,6 +44,7 @@ public class UIManager : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1;
     }
 
     // Выход из игры/выход из режима игры, если в режиме редактора

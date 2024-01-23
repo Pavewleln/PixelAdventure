@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -57,11 +58,14 @@ public class Health : MonoBehaviour
                 foreach (Behaviour component in components)
                     component.enabled = false;
 
+                SoundManager.instance.PlaySound(deathSound); // Воспроизводим звук смерти
+                body.bodyType = RigidbodyType2D.Static;
+
                 anim.SetBool("Grounded", true); // Устанавливаем анимацию на земле в true
                 anim.SetTrigger("Dead"); // Запускаем анимацию смерти
 
                 dead = true; // Устанавливаем флаг смерти в true
-                SoundManager.instance.PlaySound(deathSound); // Воспроизводим звук смерти
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
     }

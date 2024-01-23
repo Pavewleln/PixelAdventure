@@ -65,11 +65,4 @@ public class Spikehead : EnemyDamage
         destination = transform.position; // ”станавливаем точку назначени€ равной текущей позиции, чтобы остановить перемещение
         attacking = false;
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        SoundManager.instance.PlaySound(impactSound); // ¬оспроизводим звук столкновени€
-        base.OnTriggerEnter2D(collision); // ¬ызываем базовый метод OnTriggerEnter2D дл€ обработки столкновени€ с игроком
-        Stop(); // ќстанавливаем шипастую голову после столкновени€
-    }
 }
