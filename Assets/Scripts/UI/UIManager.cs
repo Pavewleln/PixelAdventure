@@ -37,12 +37,13 @@ public class UIManager : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 
     // Главное меню
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainMenu");
     }
 
     // Выход из игры/выход из режима игры, если в режиме редактора
@@ -68,16 +69,6 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 0;
         else
             Time.timeScale = 1;
-    }
-
-    public void SoundVolume()
-    {
-        SoundManager.instance.ChangeSoundVolume(0.2f);
-    }
-
-    public void MusicVolume()
-    {
-        SoundManager.instance.ChangeMusicVolume(0.2f);
     }
     #endregion
 }
