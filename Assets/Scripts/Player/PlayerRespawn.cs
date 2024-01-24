@@ -15,10 +15,19 @@ public class PlayerRespawn : MonoBehaviour
     {
         if (collision.gameObject.tag == "Checkpoint")
         {
-            SoundManager.instance.PlaySound(checkpoint); // ¬оспроизводим звук точки сохранени€
-            collision.GetComponent<Collider2D>().enabled = false; // ќтключаем коллайдер точки сохранени€, чтобы избежать повторных срабатываний
-            collision.GetComponent<Animator>().SetTrigger("Activated"); // «апускаем анимацию активации точки сохранени€
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SoundManager.instance.PlaySound(checkpoint);
+            collision.GetComponent<Collider2D>().enabled = false;
+            collision.GetComponent<Animator>().SetTrigger("Activated");
+
+            int currentLevel = SceneManager.GetActiveScene().buildIndex;
+            int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
+
+            if (currentLevel >= unlockedLevel)
+            {
+                PlayerPrefs.SetInt("UnlockedLevel", unlockedLevel + 1);
+            }
+
+            SceneManager.LoadScene(currentLevel + 1);
         }
     }
 }
