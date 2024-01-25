@@ -9,29 +9,41 @@ public class LevelsMenuManager : MonoBehaviour
     [Header("Pause")]
     [SerializeField] private GameObject pauseScreen;  // Экран паузы
 
-    [SerializeField] private Text[] levelTexts; // Массив текстовых полей
+    [Header("Array Buttons Level")]
+    [SerializeField] private Button[] levelButtons; // Массив кнопок уровней
+
+    [Header("Reset Button")]
+    [SerializeField] private Button resetButton; // Кнопка сброса уровней
 
     private void Awake()
     {
         pauseScreen.SetActive(true);  // Изначально отключаем экран паузы
     }
 
-
     private void Start()
     {
-        for (int i = 0; i < levelTexts.Length; i++)
-        {
-            int levelIndex = i + 1; // Индекс уровня (начиная с 1)
+        int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
 
-            // Добавляем обработчик события для каждого текстового поля
-            levelTexts[i].GetComponent<Button>().onClick.AddListener(() => LoadLevel(levelIndex));
+        for (int i = 0; i < levelButtons.Length; i++)
+        {
+            int levelIndex = i + 1;
+
+            bool isUnlocked = levelIndex <= unlockedLevel;
+            levelButtons[i].gameObject.SetActive(isUnlocked);
+
+            levelButtons[i].onClick.AddListener(() => LoadLevel(levelIndex));
         }
     }
 
     private void LoadLevel(int levelIndex)
     {
-        // Здесь можешь добавить свой код для загрузки уровня по его индексу
-        // Например:
-        SceneManager.LoadScene("Level" + levelIndex);
+        string sceneName = "Level" + levelIndex;
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void ResetUnlockedLevels()
+    {
+        PlayerPrefs.DeleteKey("UnlockedLevel");
+        SceneManager.LoadScene("LevelsMenu");
     }
 }
