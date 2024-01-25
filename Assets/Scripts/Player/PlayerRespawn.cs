@@ -6,11 +6,6 @@ public class PlayerRespawn : MonoBehaviour
     [SerializeField] private AudioClip checkpoint;
     // private UIManager uiManager;
 
-    private void Awake()
-    {
-
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Checkpoint")
@@ -20,14 +15,22 @@ public class PlayerRespawn : MonoBehaviour
             collision.GetComponent<Animator>().SetTrigger("Activated");
 
             int currentLevel = SceneManager.GetActiveScene().buildIndex;
-            int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
 
-            if (currentLevel >= unlockedLevel)
+            if (currentLevel > 10)
             {
-                PlayerPrefs.SetInt("UnlockedLevel", unlockedLevel + 1);
+                SceneManager.LoadScene("MainMenu");
             }
+            else
+            {
+                int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
 
-            SceneManager.LoadScene(currentLevel + 1);
+                if (currentLevel >= unlockedLevel)
+                {
+                    PlayerPrefs.SetInt("UnlockedLevel", unlockedLevel + 1);
+                }
+
+                SceneManager.LoadScene(currentLevel + 1);
+            }
         }
     }
 }
